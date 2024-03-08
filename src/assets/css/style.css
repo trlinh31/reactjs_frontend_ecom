@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #f9f3f0;
+}
+
+@layer base {
+  body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    background-color: var(--bg-primary);
+    scroll-behavior: smooth;
+  }
+  .container {
+    @apply w-full mx-auto px-4 lg:px-28;
+  }
+  .nav-item {
+    position: relative;
+  }
+  .nav-item:hover {
+    @apply text-blue-600;
+  }
+  .nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 20px;
+    width: 0;
+    height: 3px;
+    opacity: 0;
+    border-radius: 40px;
+    transition: 0.5s;
+    @apply bg-blue-600;
+  }
+  .nav-item:hover::before {
+    opacity: 1;
+    width: 100%;
+  }
+  .nav-item .active {
+    @apply text-blue-600;
+  }
+  .btn-close {
+    @apply rounded-full flex items-center justify-center bg-gray-100 cursor-pointer transition-all;
+  }
+  .btn-close:hover {
+    @apply bg-blue-600 text-white;
+  }
+  .video-section {
+    width: 100%;
+    height: calc(100vh - 116px);
+  }
+  .video-section .video {
+    min-width: 100%;
+    min-height: 100%;
+  }
+  .product-hover {
+    @apply absolute left-0 right-0 bottom-0 invisible opacity-0 transition-all duration-500;
+  }
+  .product-img:hover .product-hover {
+    @apply visible bottom-[30px] opacity-100 delay-200;
+  }
+  .image-product-large {
+    width: 100% !important;
+  }
+}
