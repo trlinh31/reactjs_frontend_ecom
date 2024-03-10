@@ -1,8 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
+import { usePostRegisterUser } from '../hooks/useAPI';
+import { toast, ToastContainer } from 'react-toastify';
 
 export default function Signup() {
+  const [data, setData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const navigate = useNavigate();
+
+  const handleChangeInput = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await usePostRegisterUser(data);
+    if (response === 201) {
+      toast.success('Register user successfull');
+      navigate('/login');
+    }
+  };
+
   return (
     <div className='w-screen h-screen flex items-center justify-center px-4'>
       <div className='grid grid-cols-1 lg:grid-cols-2 shadow-lg w-[800px] bg-white rounded-l-2xl lg:rounded-ee-2xl overflow-hidden'>
@@ -11,43 +34,54 @@ export default function Signup() {
             <FaArrowAltCircleLeft size={20} color='blue' />
           </Link>
           <h1 className='text-3xl font-bold text-gray-600 pb-14'>Sign Up</h1>
-          <div className='mb-3'>
-            <label htmlFor='form-name' className='block mb-2 text-gray-600 text-md'>
-              Full Name:
-            </label>
-            <input
-              type='text'
-              id='form-name'
-              className='w-full py-2 px-4 outline-none border border-gray-300 rounded-md text-sm text-gray-600'
-              placeholder='Enter your name...'
-              autoFocus
-            />
-          </div>
-          <div className='mb-3'>
-            <label htmlFor='form-email' className='block mb-2 text-gray-600 text-md'>
-              Email:
-            </label>
-            <input
-              type='text'
-              id='form-email'
-              className='w-full py-2 px-4 outline-none border border-gray-300 rounded-md text-sm text-gray-600'
-              placeholder='Enter your email...'
-            />
-          </div>
-          <div className='mb-3'>
-            <label htmlFor='form-password' className='block mb-2 text-gray-600 text-md'>
-              Password:
-            </label>
-            <input
-              type='password'
-              id='form-password'
-              className='w-full py-2 px-4 outline-none border border-gray-300 rounded-md text-sm text-gray-600'
-              placeholder='Enter your password...'
-            />
-          </div>
-          <div className='flex flex-col gap-y-4 mt-8'>
-            <button className='bg-black text-white py-3 rounded-md'>Create Account</button>
-          </div>
+          <form onSubmit={handleSubmit} method='post'>
+            <div className='mb-3'>
+              <label htmlFor='form-name' className='block mb-2 text-gray-600 text-md'>
+                Full Name:
+              </label>
+              <input
+                type='text'
+                id='form-name'
+                name='name'
+                value={data.name}
+                className='w-full py-2 px-4 outline-none border border-gray-300 rounded-md text-sm text-gray-600'
+                placeholder='Enter your name...'
+                onChange={handleChangeInput}
+                autoFocus
+              />
+            </div>
+            <div className='mb-3'>
+              <label htmlFor='form-email' className='block mb-2 text-gray-600 text-md'>
+                Email:
+              </label>
+              <input
+                type='text'
+                id='form-email'
+                name='email'
+                value={data.email}
+                className='w-full py-2 px-4 outline-none border border-gray-300 rounded-md text-sm text-gray-600'
+                placeholder='Enter your email...'
+                onChange={handleChangeInput}
+              />
+            </div>
+            <div className='mb-3'>
+              <label htmlFor='form-password' className='block mb-2 text-gray-600 text-md'>
+                Password:
+              </label>
+              <input
+                type='password'
+                id='form-password'
+                name='password'
+                value={data.password}
+                className='w-full py-2 px-4 outline-none border border-gray-300 rounded-md text-sm text-gray-600'
+                placeholder='Enter your password...'
+                onChange={handleChangeInput}
+              />
+            </div>
+            <div className='flex flex-col gap-y-4 mt-8'>
+              <button className='bg-black text-white py-3 rounded-md'>Create Account</button>
+            </div>
+          </form>
         </div>
         <div className='col-span-1 relative hidden lg:block rounded-ss-2xl rounded-ee-2xl overflow-hidden'>
           <img
@@ -60,6 +94,7 @@ export default function Signup() {
           </Link>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

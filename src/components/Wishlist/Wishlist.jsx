@@ -4,7 +4,7 @@ import { useWishlist } from '../../hooks/useWishlist';
 import { FaStar } from 'react-icons/fa6';
 
 export default function Wishlist({ showWishlist, setShowWishlist }) {
-  const { wishlist } = useWishlist();
+  const { wishlist, addToWishlist } = useWishlist();
 
   return (
     <Fragment>
@@ -27,7 +27,7 @@ export default function Wishlist({ showWishlist, setShowWishlist }) {
                   <div className='flex item-center'>
                     <div className='relative w-[100px] h-[100px]'>
                       <div className='absolute top-[-10px] left-[-10px] z-20 p-[2px] bg-white rounded-full'>
-                        <div className='btn-close w-[30px] h-[30px]'>
+                        <div className='btn-close w-[30px] h-[30px]' onClick={() => addToWishlist(item.id)}>
                           <IoIosClose size={30} />
                         </div>
                       </div>

@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import products from './../db/data';
 import { toast } from 'react-toastify';
+import { useGetAllProducts, useGetProductById } from './useAPI';
+import { getRequestSite } from '../api/requestApi';
 
 const WishlistContext = createContext();
 
@@ -26,8 +27,9 @@ export default function WishlistProvider({ children }) {
       setWishlist(wishlistNew);
       toast.warning('Removed product from wishlist');
     } else {
-      const product = products.find((p) => p.id === id);
-      setWishlist([...wishlist, product]);
+      getRequestSite('products/' + id).then((data) => {
+        setWishlist([...wishlist, data]);
+      });
       toast.success('Add to wishlist successfull');
     }
   };

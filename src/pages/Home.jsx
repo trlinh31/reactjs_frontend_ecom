@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <Fragment>
       <VideoSection />
-      {/* <Section1 /> */}
+      <Section1 />
       <div className='container'>
         <ProductsSwiper />
         <Section2 />

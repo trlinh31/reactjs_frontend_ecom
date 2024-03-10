@@ -9,11 +9,11 @@ import Layout from './layouts/Layout.jsx';
 import Home from './pages/Home.jsx';
 import Shop from './pages/Shop.jsx';
 import Detail from './pages/Detail.jsx';
-import CartProvider from './hooks/useCart.jsx';
 import WishlistProvider from './hooks/useWishlist.jsx';
 import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import NotFound from './pages/404.jsx';
+import CartProvider from './hooks/useCart.jsx';
 
 const router = createBrowserRouter([
   {
@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <Shop />,
       },
       {
-        path: '/product/:slug',
+        path: '/product/:id/:slug',
         element: <Detail />,
       },
     ],

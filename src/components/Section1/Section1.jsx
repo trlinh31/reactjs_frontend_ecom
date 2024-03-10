@@ -6,8 +6,8 @@ import WallClock from './../../assets/images/wall-clock.png';
 
 export default function Section1() {
   return (
-    <section className='container max-w-[1200px] w-full my-10'>
-      <div className='grid grid-cols-4'>
+    <section className='container w-full my-10'>
+      <div className='grid grid-cols-2 md:grid-cols-4'>
         <div className='col-span-1'>
           <div className='flex gap-x-5 h-[64px]'>
             <img src={Delivery} className='h-[40px] block my-auto' alt='' />

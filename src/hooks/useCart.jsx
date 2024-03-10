@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react';
+import React, { createContext, useContext, useReducer } from 'react';
 import { toast } from 'react-toastify';
 
 const CartContext = createContext();
@@ -98,8 +98,15 @@ export default function CartProvider({ children }) {
     dispatch({ type: 'DECRE_QUANTITY', payload: productId, size: size });
   };
 
+  const handleGetTotalPrice = () => {
+    let total = cartState.cartItems.reduce((cur, item) => {
+      return cur + item.price * item.quantity;
+    }, 0);
+    return total;
+  };
+
   return (
-    <CartContext.Provider value={{ cartState, handleAddToCart, handleIncrement, handleDecrement, handleDeleteCartItem }}>
+    <CartContext.Provider value={{ cartState, handleAddToCart, handleIncrement, handleDecrement, handleDeleteCartItem, handleGetTotalPrice }}>
       {children}
     </CartContext.Provider>
   );

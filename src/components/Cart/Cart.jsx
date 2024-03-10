@@ -4,7 +4,7 @@ import { FaMinus, FaPlus } from 'react-icons/fa6';
 import { useCart } from '../../hooks/useCart';
 
 export default function Cart({ showCart, setShowCart }) {
-  const { cartState, handleIncrement, handleDecrement, handleDeleteCartItem } = useCart();
+  const { cartState, handleIncrement, handleDecrement, handleDeleteCartItem, handleGetTotalPrice } = useCart();
 
   return (
     <Fragment>
@@ -58,6 +58,12 @@ export default function Cart({ showCart, setShowCart }) {
                 </li>
               ))}
           </ul>
+          <div className='absolute left-0 right-0 bottom-0 py-10 px-[50px]'>
+            <div className='flex items-center justify-between'>
+              <h1 className='font-bold text-3xl text-gray-600'>Total:</h1>
+              <h1 className='font-bold text-3xl text-gray-600'>${handleGetTotalPrice()}</h1>
+            </div>
+          </div>
         </div>
       </div>
     </Fragment>

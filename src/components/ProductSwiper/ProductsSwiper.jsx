@@ -1,12 +1,23 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/navigation';
 import { Navigation } from 'swiper/modules';
-import data from '../../db/data';
 import Card from '../Card/Card';
 import SwiperButton from '../SwiperButton/SwiperButton';
+import { useGetAllProducts } from '../../hooks/useAPI';
 
 export default function ProductsSwiper() {
+  const [products, setProducts] = useState([]);
+
+  const fetchData = async () => {
+    const productsApi = await useGetAllProducts();
+    setProducts(productsApi);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <Fragment>
       <div className='flex items-center justify-between mb-8'>
@@ -38,9 +49,9 @@ export default function ProductsSwiper() {
           },
         }}
         modules={[Navigation]}>
-        {data.map((item) => (
+        {products.map((item) => (
           <SwiperSlide key={item.id}>
-            <Card id={item.id} image={item.image} title={item.title} slug={item.slug} price={item.price} reviews={item.reviews} />
+            <Card product={item} />
           </SwiperSlide>
         ))}
       </Swiper>

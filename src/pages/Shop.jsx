@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
-import products from '../db/data';
 import Card from '../components/Card/Card';
 import Products from '../components/Products/Products';
 import { IoFilter } from 'react-icons/io5';
+import { useGetAllProducts } from '../hooks/useAPI';
 
 export default function Shop() {
+  const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedPrice, setSelectedPrice] = useState('');
   const [showFilter, setShowFilter] = useState(false);
+
+  const fetchData = async () => {
+    const productsApi = await useGetAllProducts();
+    setProducts(productsApi);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
@@ -18,7 +28,7 @@ export default function Shop() {
     setSelectedPrice(e.target.value);
   };
 
-  function filterData(products, category, price) {
+  const filterData = (products, category, price) => {
     let filteredProducts = products;
 
     if (category) {
@@ -42,10 +52,8 @@ export default function Shop() {
       }
     }
 
-    return filteredProducts.map(({ id, image, title, slug, price, reviews }) => (
-      <Card key={id} id={id} image={image} title={title} slug={slug} price={price} reviews={reviews} />
-    ));
-  }
+    return filteredProducts.map((item, index) => <Card key={index} product={item} />);
+  };
 
   const result = filterData(products, selectedCategory, selectedPrice);
 

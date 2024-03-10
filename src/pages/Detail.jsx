@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import products from '../db/data';
 import { FaStar } from 'react-icons/fa6';
 import Size from '../components/Size/Size';
 import { IoBagHandle } from 'react-icons/io5';
@@ -8,10 +7,20 @@ import { FaRegHeart, FaHeart } from 'react-icons/fa6';
 import { useCart } from '../hooks/useCart';
 import ImageZoom from 'react-image-zooom';
 import { useWishlist } from './../hooks/useWishlist';
+import { useGetProductById } from '../hooks/useAPI';
 
 export default function Detail() {
-  const { slug } = useParams();
-  const product = products.find((p) => p.slug === slug);
+  const [product, setProduct] = useState({});
+  const { id, slug } = useParams();
+
+  const fetchData = async () => {
+    const productApi = await useGetProductById(id);
+    setProduct(productApi);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [id, slug]);
 
   const [size, setSize] = useState('');
   const handleSizeChange = (e) => {
@@ -26,7 +35,7 @@ export default function Detail() {
       <div className='container'>
         <div className='grid grid-cols-12 gap-y-10 lg:gap-y-0 lg:gap-x-10'>
           <div className='col-span-12 lg:col-span-6 w-full h-[70vh] rounded-xl overflow-hidden'>
-            <ImageZoom src={product.image} className='image-product-large h-full object-cover object-top' alt='...' zoom='150' />
+            <img src={product.image} className='image-product-large h-full object-cover object-top' alt='...' />
           </div>
           <div className='col-span-12 lg:col-span-6'>
             <h1 className='font-bold text-3xl pb-4'>{product.title}</h1>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import products from './../../db/data';
+// import products from './../../db/data';
 import LoadingSkeleton from '../Loading/LoadingSkeleton';
+import { useGetProductByName } from './../../hooks/useAPI';
 
 export default function Search({ showSearchModal, setShowSearchModal }) {
   const [searchResult, setSearchResult] = useState([]);
@@ -14,27 +15,37 @@ export default function Search({ showSearchModal, setShowSearchModal }) {
     setShowSearchModal(false);
   }, [location]);
 
-  function search(keywords) {
-    setLoading(true);
-    let keywordsLower = keywords.toLowerCase().trim();
-    let result = products.filter((p) => p.title.toLowerCase().includes(keywordsLower));
-    if (result) {
-      setTimeout(() => {
-        setSearchResult(result);
-        setLoading(false);
-      }, 1000);
-    } else {
-      setSearchResult([]);
-      setLoading(false);
-    }
-  }
+  // function search(keywords) {
+  //   setLoading(true);
+  //   let keywordsLower = keywords.toLowerCase();
+  //   let result = useGetProductByName(keywordsLower);
+  //   console.log(result);
+  //   if (result) {
+  //     setTimeout(() => {
+  //       setSearchResult(result);
+  //       setLoading(false);
+  //     }, 1000);
+  //   } else {
+  //     setSearchResult([]);
+  //     setLoading(false);
+  //   }
+  // }
 
   const handleSearchInput = (e) => {
     setKeywords(e.target.value);
   };
 
+  const handleSearch = async () => {
+    setLoading(true);
+    const data = await useGetProductByName(keywords);
+    setTimeout(() => {
+      setSearchResult(data);
+      setLoading(false);
+    }, 1000);
+  };
+
   useEffect(() => {
-    search(keywords);
+    handleSearch();
   }, [keywords]);
 
   return (
@@ -66,19 +77,19 @@ export default function Search({ showSearchModal, setShowSearchModal }) {
                   {searchResult.length > 0 &&
                     searchResult.map((item, index) => (
                       <li key={index} className='w-full border p-3 rounded-lg hover:shadow-lg mb-3'>
-                        <Link to={'/shop'}>
-                          <div className=' flex items-center'>
+                        <div className=' flex items-center'>
+                          <Link to={'/product/' + item.id + '/' + item.slug}>
                             <div className='w-[120px] h-[120px] rounded-lg overflow-hidden'>
                               <img src={item.image} className='w-full h-full object-cover object-top' alt='' />
                             </div>
-                            <div className='flex flex-col justify-between lg:flex-row ml-4 lg:ml-8'>
-                              <div className='flex flex-col gap-y-4 justify-around'>
-                                <h3 className='text-sm font-medium line-clamp-2'>{item.title}</h3>
-                                <p className='text-xl font-bold'>${item.price}</p>
-                              </div>
+                          </Link>
+                          <div className='flex flex-col justify-between lg:flex-row ml-4 lg:ml-8'>
+                            <div className='flex flex-col gap-y-4 justify-around'>
+                              <h3 className='text-sm font-medium line-clamp-2'>{item.title}</h3>
+                              <p className='text-xl font-bold'>${item.price}</p>
                             </div>
                           </div>
-                        </Link>
+                        </div>
                       </li>
                     ))}
                 </ul>
