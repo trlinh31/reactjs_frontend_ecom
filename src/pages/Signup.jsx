@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
-import { usePostRegisterUser } from '../hooks/useAPI';
 import { toast, ToastContainer } from 'react-toastify';
 import { useAuth } from '../hooks/useAuth';
 

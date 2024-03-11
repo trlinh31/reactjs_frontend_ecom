@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
-import { usePostLoginUser } from '../hooks/useAPI';
 import { toast, ToastContainer } from 'react-toastify';
 import { useAuth } from '../hooks/useAuth';
 

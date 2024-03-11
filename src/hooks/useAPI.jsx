@@ -31,21 +31,3 @@ export const useGetProductByName = async (keywords) => {
     console.error(error);
   }
 };
-
-export const usePostRegisterUser = async (data) => {
-  try {
-    const response = await request.post('users', data);
-    return response.status;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const usePostLoginUser = async () => {
-  try {
-    const response = await request.get('users');
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
