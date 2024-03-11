@@ -3,10 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import { usePostRegisterUser } from '../hooks/useAPI';
 import { toast, ToastContainer } from 'react-toastify';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Signup() {
+  const { signUp } = useAuth();
+
   const [data, setData] = useState({
-    name: '',
     email: '',
     password: '',
   });
@@ -19,10 +21,11 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await usePostRegisterUser(data);
-    if (response === 201) {
-      toast.success('Register user successfull');
+    try {
+      await signUp(data.email, data.password);
       navigate('/login');
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -35,21 +38,6 @@ export default function Signup() {
           </Link>
           <h1 className='text-3xl font-bold text-gray-600 pb-14'>Sign Up</h1>
           <form onSubmit={handleSubmit} method='post'>
-            <div className='mb-3'>
-              <label htmlFor='form-name' className='block mb-2 text-gray-600 text-md'>
-                Full Name:
-              </label>
-              <input
-                type='text'
-                id='form-name'
-                name='name'
-                value={data.name}
-                className='w-full py-2 px-4 outline-none border border-gray-300 rounded-md text-sm text-gray-600'
-                placeholder='Enter your name...'
-                onChange={handleChangeInput}
-                autoFocus
-              />
-            </div>
             <div className='mb-3'>
               <label htmlFor='form-email' className='block mb-2 text-gray-600 text-md'>
                 Email:

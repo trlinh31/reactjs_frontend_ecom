@@ -4,20 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import { usePostLoginUser } from '../hooks/useAPI';
 import { toast, ToastContainer } from 'react-toastify';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Login() {
+  const { signIn } = useAuth();
   const [data, setData] = useState({
     email: '',
     password: '',
   });
-
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (user) {
-      localStorage.removeItem('user');
-      navigate('/');
-    }
-  }, []);
 
   const navigate = useNavigate();
 
@@ -27,19 +21,11 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await usePostLoginUser();
-    const user = response.filter((u) => u.email === data.email && u.password === data.password);
-    if (user.length > 0) {
-      localStorage.setItem('user', user[0].name);
-      toast.success('Login successfull');
-      setTimeout(() => {
-        navigate('/');
-      }, 1000);
-    } else {
-      toast.error('Invalid user');
-      setData({
-        password: '',
-      });
+    try {
+      await signIn(data.email, data.password);
+      navigate('/');
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 

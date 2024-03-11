@@ -14,6 +14,7 @@ import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import NotFound from './pages/404.jsx';
 import CartProvider from './hooks/useCart.jsx';
+import { AuthProvider } from './hooks/useAuth.jsx';
 
 const router = createBrowserRouter([
   {
@@ -50,10 +51,12 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <CartProvider>
-      <WishlistProvider>
-        <RouterProvider router={router} />
-      </WishlistProvider>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <RouterProvider router={router} />
+        </WishlistProvider>
+      </CartProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

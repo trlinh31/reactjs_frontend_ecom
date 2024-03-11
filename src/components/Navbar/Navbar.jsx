@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { URL } from './../../router/AppURL';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaRegHeart } from 'react-icons/fa6';
 import { BiSearch, BiUser } from 'react-icons/bi';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -9,14 +9,18 @@ import { RxHamburgerMenu } from 'react-icons/rx';
 import { IoIosClose } from 'react-icons/io';
 import Search from '../Search/Search';
 import Wishlist from '../Wishlist/Wishlist';
+import { useAuth } from '../../hooks/useAuth';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 export default function Navbar() {
+  const { user, logOut } = useAuth();
   const [sticky, setSticky] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showNavMobile, setShowNavMobile] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.addEventListener('scroll', stickyNav);
@@ -36,6 +40,11 @@ export default function Navbar() {
 
   const isActive = (pathname) => {
     return location.pathname === pathname;
+  };
+
+  const handleLogOut = async () => {
+    await logOut();
+    navigate('/');
   };
 
   return (
@@ -68,9 +77,15 @@ export default function Navbar() {
                 <FiShoppingCart size={20} />
               </li>
               <li className='cursor-pointer'>
-                <Link to={'/login'}>
-                  <BiUser size={20} />
-                </Link>
+                {user?.email ? (
+                  <div onClick={handleLogOut}>
+                    <FaSignOutAlt size={20} />
+                  </div>
+                ) : (
+                  <Link to={'/login'}>
+                    <BiUser size={20} />
+                  </Link>
+                )}
               </li>
               <li className='md:hidden block cursor-pointer' onClick={() => setShowNavMobile(!showNavMobile)}>
                 <RxHamburgerMenu size={20} />
