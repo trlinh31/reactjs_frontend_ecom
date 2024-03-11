@@ -47,7 +47,7 @@ export default function Detail() {
               <FaStar className='text-yellow-400' />
               <span className='pl-2 pt-1 text-gray-500'>{product.reviews} reviews</span>
             </div>
-            <h1 className='font-bold text-4xl text-gray-600 pb-8'>${product.price}.00</h1>
+            <h1 className='font-bold text-4xl text-gray-600 pb-8'>${product.price}</h1>
             <div className='mb-10'>
               <p className='pb-3'>Select Size</p>
               <div className='flex gap-x-3'>
