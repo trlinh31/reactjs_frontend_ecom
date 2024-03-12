@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-// import products from './../../db/data';
 import LoadingSkeleton from '../Loading/LoadingSkeleton';
 import { useGetProductByName } from './../../hooks/useAPI';
 
@@ -14,22 +13,6 @@ export default function Search({ showSearchModal, setShowSearchModal }) {
   useEffect(() => {
     setShowSearchModal(false);
   }, [location]);
-
-  // function search(keywords) {
-  //   setLoading(true);
-  //   let keywordsLower = keywords.toLowerCase();
-  //   let result = useGetProductByName(keywordsLower);
-  //   console.log(result);
-  //   if (result) {
-  //     setTimeout(() => {
-  //       setSearchResult(result);
-  //       setLoading(false);
-  //     }, 1000);
-  //   } else {
-  //     setSearchResult([]);
-  //     setLoading(false);
-  //   }
-  // }
 
   const handleSearchInput = (e) => {
     setKeywords(e.target.value);
@@ -74,24 +57,23 @@ export default function Search({ showSearchModal, setShowSearchModal }) {
                 <LoadingSkeleton isLoading={loading} />
               ) : (
                 <ul className='my-5 max-h-[400px] overflow-y-auto'>
-                  {searchResult.length > 0 &&
-                    searchResult.map((item, index) => (
-                      <li key={index} className='w-full border p-3 rounded-lg hover:shadow-lg mb-3'>
-                        <div className=' flex items-center'>
-                          <Link to={'/product/' + item.id + '/' + item.slug}>
-                            <div className='w-[120px] h-[120px] rounded-lg overflow-hidden'>
-                              <img src={item.image} className='w-full h-full object-cover object-top' alt='' />
-                            </div>
-                          </Link>
-                          <div className='flex flex-col justify-between lg:flex-row ml-4 lg:ml-8'>
-                            <div className='flex flex-col gap-y-4 justify-around'>
-                              <h3 className='text-sm font-medium line-clamp-2'>{item.title}</h3>
-                              <p className='text-xl font-bold'>${item.price}</p>
-                            </div>
+                  {searchResult.map((item, index) => (
+                    <li key={index} className='w-full border p-3 rounded-lg hover:shadow-lg mb-3'>
+                      <div className=' flex items-center'>
+                        <Link to={'/product/' + item.id + '/' + item.slug}>
+                          <div className='w-[120px] h-[120px] rounded-lg overflow-hidden'>
+                            <img src={item.image} className='w-full h-full object-cover object-top' alt='' />
+                          </div>
+                        </Link>
+                        <div className='flex flex-col justify-between lg:flex-row ml-4 lg:ml-8'>
+                          <div className='flex flex-col gap-y-4 justify-around'>
+                            <h3 className='text-sm font-medium line-clamp-2'>{item.title}</h3>
+                            <p className='text-xl font-bold'>${item.price}</p>
                           </div>
                         </div>
-                      </li>
-                    ))}
+                      </div>
+                    </li>
+                  ))}
                 </ul>
               )}
             </div>
